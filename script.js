@@ -1,53 +1,33 @@
 import { FetchPokemonData } from "./js/fetchPokemonData.js";
-import { PokemonRenderer } from "./js/PokemonRenderer.js";
+import { PokeCardRenderer } from "./js/pokeCardRenderer.js";
 
-async function initPokedex() {
-  const renderer = new PokemonRenderer("pokedex");
-  let currentOffset = 1;
-  const limit = 20;
+let currentOffset = 1;
+const limit = 20;
+let renderer;
+let pokeCards;
 
-  const button = document.getElementById("next-button");
+async function loadAndRenderPokemon(button) {
+  showSpinner();
 
-  const pokeCards = document.createElement("div");
-  pokeCards.classList.add("pokeCards");
-  renderer.containerElement.appendChild(pokeCards);
-
-  const loadAndRenderPokemon = async () => {
+  try {
     if (currentOffset > 151) {
       button.disabled = true;
-      return;
+      return [];
     }
 
     const remaining = 151 - currentOffset + 1;
     const fetchLimit = Math.min(limit, remaining);
-    const newPokemon = await FetchPokemonData.loadPokemon(
+    const newPokemons = await FetchPokemonData.loadPokemons(
       currentOffset,
       fetchLimit
     );
-    console.log("Geladene Pokémon:", newPokemon);
-    renderer.filteredPokemonList.push(...newPokemon);
 
-    newPokemon.forEach((pokemon) => {
+    renderer.originalPokemonList.push(...newPokemons);
+    renderer.filteredPokemonList.push(...newPokemons);
+
+    newPokemons.forEach((pokemon) => {
       const card = renderer.renderPokeCard(pokemon);
-
-      card.addEventListener("click", () => {
-        const detailCard = renderer.renderPokemonDetailCard(pokemon);
-
-        // Overlay für Detailansicht erstellen
-        const overlay = document.createElement("div");
-        overlay.classList.add("detail-card-overlay");
-        overlay.appendChild(detailCard);
-
-        document.body.appendChild(overlay);
-
-        const closeIcon = document.querySelector(".close-image");
-
-        // Schließen durch Klick aufs Overlay
-        closeIcon.addEventListener("click", (e) => {
-          overlay.remove();
-        });
-      });
-
+      CardClickHandler(card, pokemon);
       pokeCards.appendChild(card);
     });
 
@@ -56,11 +36,94 @@ async function initPokedex() {
     if (currentOffset > 151) {
       button.disabled = true;
     }
-  };
 
-  button.addEventListener("click", loadAndRenderPokemon);
+    return newPokemons;
+  } finally {
+    hideSpinner();
+  }
+}
 
-  loadAndRenderPokemon();
+function CardClickHandler(card, pokemon) {
+  card.addEventListener("click", () => {
+    let currentIndex = renderer.originalPokemonList.findIndex(
+      (p) => p.id === pokemon.id
+    );
+
+    const renderDetailCard = async (index) => {
+      const existingOverlay = document.querySelector(".detail-card-overlay");
+      if (existingOverlay) existingOverlay.remove();
+
+      // Falls das Pokémon noch nicht geladen wurde (index >= Länge)
+      while (index >= renderer.originalPokemonList.length) {
+        const button = document.getElementById("next-button");
+        const newPokemons = await loadAndRenderPokemon(button);
+
+        newPokemons.forEach((pokemon) => {
+          const card = renderer.renderPokeCard(pokemon);
+          CardClickHandler(card, pokemon);
+          pokeCards.appendChild(card);
+        });
+      }
+
+      const newPokemon = renderer.originalPokemonList[index];
+      const detailCard = renderer.renderPokemonDetailCard(newPokemon);
+
+      const overlay = document.createElement("div");
+      overlay.classList.add("detail-card-overlay");
+      overlay.appendChild(detailCard);
+      document.body.appendChild(overlay);
+
+      const closeIcon = overlay.querySelector(".close-image");
+      if (closeIcon) {
+        closeIcon.addEventListener("click", () => overlay.remove());
+      }
+
+      const leftBtn = overlay.querySelector("#switch-left");
+      const rightBtn = overlay.querySelector("#switch-right");
+
+      if (leftBtn) {
+        leftBtn.addEventListener("click", async () => {
+          const prevIndex = (currentIndex - 1 + 151) % 151;
+          currentIndex = prevIndex;
+          await renderDetailCard(prevIndex);
+        });
+      }
+
+      if (rightBtn) {
+        rightBtn.addEventListener("click", async () => {
+          const nextIndex = (currentIndex + 1) % 151;
+          currentIndex = nextIndex;
+          await renderDetailCard(nextIndex);
+        });
+      }
+    };
+
+    renderDetailCard(currentIndex);
+  });
+}
+
+function setupNextButton(button) {
+  button.addEventListener("click", () => loadAndRenderPokemon(button));
+}
+
+async function initPokedex() {
+  renderer = new PokeCardRenderer("pokedex");
+  const button = document.getElementById("next-button");
+
+  pokeCards = document.createElement("div");
+  pokeCards.classList.add("pokeCards");
+  renderer.containerElement.appendChild(pokeCards);
+
+  setupNextButton(button);
+  await loadAndRenderPokemon(button);
+}
+
+function showSpinner() {
+  document.getElementById("loading-overlay").classList.remove("hidden");
+}
+
+function hideSpinner() {
+  document.getElementById("loading-overlay").classList.add("hidden");
 }
 
 await initPokedex();

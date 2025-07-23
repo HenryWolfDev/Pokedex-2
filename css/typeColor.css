@@ -1,0 +1,48 @@
+.type-Normal {
+  background-color: #a8a77a;
+}
+.type-Feuer {
+  background-color: #ee8130;
+}
+.type-Wasser {
+  background-color: #6390f0;
+}
+.type-Elektro {
+  background-color: #f7d02c;
+}
+.type-Pflanze {
+  background-color: #7fd150;
+}
+.type-Eis {
+  background-color: #96d9d6;
+}
+.type-Kampf {
+  background-color: #c22e28;
+}
+.type-Gift {
+  background-color: #a33ea1;
+}
+.type-Boden {
+  background-color: #e2bf65;
+}
+.type-Flug {
+  background-color: #a98ff3;
+}
+.type-Psycho {
+  background-color: #f95587;
+}
+.type-Käfer {
+  background-color: #a6b91a;
+}
+.type-Gestein {
+  background-color: #b6a136;
+}
+.type-Geist {
+  background-color: #735797;
+}
+.type-Drache {
+  background-color: #6f35fc;
+}
+.type-Fee {
+  background-color: #d685ad;
+}

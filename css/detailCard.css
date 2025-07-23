@@ -8,7 +8,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
+  z-index: 10;
 }
 
 .detail-card {
@@ -16,7 +16,6 @@
   flex-direction: column;
   gap: 2rem;
 
-  background: white;
   padding: 20px;
   border-radius: 12px;
   max-width: 600px;
@@ -79,12 +78,12 @@
 
       .stat-bar-div {
         flex: 1;
-        background-color: rgb(153, 183, 210);
+        background-color: rgb(238, 238, 238);
 
         .stat-bar {
           display: block;
           height: 100%;
-          background-color: #35195c;
+          background-color: #626262;
           border: 0.1rem solid black;
           border-radius: 4px;
           transition: width 0.3s ease;

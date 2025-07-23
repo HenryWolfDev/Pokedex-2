@@ -1,4 +1,4 @@
-export class PokemonRenderer {
+export class PokeCardRenderer {
   constructor(container) {
     this.containerElement = document.querySelector(`#${container}`);
 
@@ -14,7 +14,8 @@ export class PokemonRenderer {
   // #region POKECARD
   renderPokeCard(pokemon) {
     const pokeCard = document.createElement("div");
-    pokeCard.classList.add("pokemon-card");
+    const primaryType = pokemon.type[0];
+    pokeCard.classList.add("pokemon-card", `type-${primaryType}`);
 
     // POKEMON-TITLE-BOX
     const titleBox = document.createElement("div");
@@ -56,7 +57,8 @@ export class PokemonRenderer {
 
   renderPokemonDetailCard(pokemon) {
     const detailCard = document.createElement("div");
-    detailCard.classList.add("detail-card");
+    const primaryType = pokemon.type[0];
+    detailCard.classList.add("detail-card", `type-${primaryType}`);
 
     // POKEMON-TITLE-BOX
     const titleBox = document.createElement("div");
@@ -83,10 +85,12 @@ export class PokemonRenderer {
 
     const pokeIconLeft = document.createElement("img");
     pokeIconLeft.classList.add("switch-image");
+    pokeIconLeft.id = "switch-left";
     pokeIconLeft.src = `../images/pokeball-left.PNG`;
 
     const pokeIconRight = document.createElement("img");
     pokeIconRight.classList.add("switch-image");
+    pokeIconRight.id = "switch-right";
     pokeIconRight.src = `../images/pokeball-right.png`;
 
     imageBox.appendChild(pokeIconLeft);

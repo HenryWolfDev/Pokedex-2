@@ -92,7 +92,7 @@ export class FetchPokemonData {
     return pokemon;
   }
 
-  static async loadPokemon(offset = 1, limit = 20) {
+  static async loadPokemons(offset = 1, limit = 20) {
     const pokemonList = [];
 
     for (let id = offset; id < offset + limit; id++) {
