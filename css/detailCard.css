@@ -1,0 +1,102 @@
+.detail-card-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.detail-card {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 600px;
+  width: 90%;
+  height: auto;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+
+  .title-box {
+    display: flex;
+    justify-content: space-between;
+    font-size: 2rem;
+
+    .close-image {
+      width: 2.5rem;
+      height: 2.5rem;
+      object-fit: contain;
+      cursor: pointer;
+    }
+  }
+
+  .image-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    img {
+      width: 14rem;
+      height: 14rem;
+      object-fit: contain;
+    }
+
+    .switch-image {
+      width: 6rem;
+      height: 6rem;
+      object-fit: contain;
+      cursor: pointer;
+    }
+  }
+
+  .type-box {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.6rem;
+  }
+
+  .stats-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: 0.5rem;
+
+    font-size: 1.6rem;
+
+    .stat-box-line {
+      display: flex;
+      justify-content: space-between;
+
+      .type-name {
+        width: 20rem;
+      }
+
+      .stat-bar-div {
+        flex: 1;
+        background-color: rgb(153, 183, 210);
+
+        .stat-bar {
+          display: block;
+          height: 100%;
+          background-color: #35195c;
+          border: 0.1rem solid black;
+          border-radius: 4px;
+          transition: width 0.3s ease;
+
+          position: relative;
+        }
+      }
+
+      .base-stat {
+        text-align: end;
+        width: 4rem;
+      }
+    }
+  }
+}

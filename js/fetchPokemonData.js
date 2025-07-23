@@ -92,10 +92,10 @@ export class FetchPokemonData {
     return pokemon;
   }
 
-  static async loadPokemon(limit = 151) {
+  static async loadPokemon(offset = 1, limit = 20) {
     const pokemonList = [];
 
-    for (let id = 1; id <= limit; id++) {
+    for (let id = offset; id < offset + limit; id++) {
       let pokemon = await this.createPokemonArray(id);
       pokemonList.push(...pokemon);
     }
