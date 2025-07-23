@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="css/loadingSpinner.css" />
     <link rel="stylesheet" href="css/pokedex.css" />
     <link rel="stylesheet" href="css/detailCard.css" />
+
+    <link rel="icon" href="/images/pokeball-right.png" type="image/png" />
     <title>Pokedex</title>
   </head>
   <body>
@@ -31,7 +33,11 @@
       <div class="container">
         <div class="header">
           <h2>Pokedex</h2>
-          <input type="text" placeholder="Finde dein Pokemon..." />
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Finde dein Pokemon..."
+          />
         </div>
       </div>
     </header>
@@ -42,6 +48,7 @@
         </div>
       </div>
     </main>
+    <div id="detail-overlay" class="detail-card-overlay hidden"></div>
     <footer></footer>
     <script type="module" src="script.js"></script>
   </body>

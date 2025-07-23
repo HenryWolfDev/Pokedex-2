@@ -99,6 +99,7 @@ export class FetchPokemonData {
       let pokemon = await this.createPokemonArray(id);
       pokemonList.push(...pokemon);
     }
+    console.log(pokemonList);
     return pokemonList;
   }
 }
