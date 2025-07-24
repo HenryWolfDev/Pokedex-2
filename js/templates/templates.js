@@ -61,9 +61,9 @@ export const Templates = {
     const id = document.createElement("span");
     id.textContent = pokemon.id;
 
-    titleBox.appendChild(closeIcon);
-    titleBox.appendChild(name);
     titleBox.appendChild(id);
+    titleBox.appendChild(name);
+    titleBox.appendChild(closeIcon);
 
     const imageBox = document.createElement("div");
     imageBox.classList.add("image-box");
