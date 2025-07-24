@@ -57,11 +57,11 @@ async function loadNextPokemonsIfIndexMissing(index) {
   }
 }
 
-function loadNextPokemonsListener(button) {
+function loadMorePokemonListener(button) {
   button.addEventListener("click", () => loadAndRenderPokemon(button));
 }
 
-function searchInput() {
+function searchInputListenerAndRendering() {
   const searchInput = document.getElementById("search-input");
 
   searchInput.addEventListener("input", () => {
@@ -109,8 +109,8 @@ async function initPokedex() {
   pokeCards.classList.add("pokeCards");
   renderer.containerElement.appendChild(pokeCards);
 
-  loadNextPokemonsListener(button);
-  searchInput();
+  loadMorePokemonListener(button);
+  searchInputListenerAndRendering();
   await loadAndRenderPokemon(button);
 }
 // #endregion LOAD-RENDERING
