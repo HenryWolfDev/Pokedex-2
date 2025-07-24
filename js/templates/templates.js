@@ -43,7 +43,7 @@ export const Templates = {
   // #endregion POKE-CARD
 
   // #region POKEMON-DETAIL-CARD
-  createPokemonDetailCard(pokemon, statbarCallback) {
+  createPokemonDetailCard(pokemon, calcStatBar) {
     const detailCard = document.createElement("div");
     detailCard.classList.add("detail-card", `type-${pokemon.type[0]}`);
 
@@ -120,7 +120,7 @@ export const Templates = {
 
       const statBar = document.createElement("span");
       statBar.classList.add("stat-bar");
-      statBar.style.width = `${statbarCallback(stat)}%`;
+      statBar.style.width = `${calcStatBar(stat)}%`;
 
       const baseStat = document.createElement("span");
       baseStat.classList.add("base-stat");
