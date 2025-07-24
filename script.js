@@ -7,9 +7,9 @@ let renderer;
 let pokeCards;
 
 // #region LOAD-RENDERING
+
 async function loadAndRenderPokemon(button) {
   showSpinner();
-
   try {
     if (currentOffset > 151) {
       button.disabled = true;
@@ -24,15 +24,9 @@ async function loadAndRenderPokemon(button) {
     );
 
     renderer.originalPokemonList.push(...newPokemons);
-
-    newPokemons.forEach((pokemon) => {
-      const card = renderer.renderPokeCard(pokemon);
-      CardClickHandler(card, pokemon);
-      pokeCards.appendChild(card);
-    });
+    renderPokemonCards(newPokemons);
 
     currentOffset += limit;
-
     if (currentOffset > 151) {
       button.disabled = true;
     }
@@ -43,18 +37,21 @@ async function loadAndRenderPokemon(button) {
   }
 }
 
-async function loadNextPokemonsIfIndexMissing(index) {
-  // wenn index größer oder gleich wie liste ist -  dann wird geladen
-  while (index >= renderer.originalPokemonList.length) {
-    const button = document.getElementById("next-button");
-    const newPokemons = await loadAndRenderPokemon(button);
+function renderPokemonCards(pokemonList) {
+  pokemonList.forEach((pokemon) => {
+    const card = renderer.renderPokeCard(pokemon);
+    cardClickHandler(card, pokemon);
+    pokeCards.appendChild(card);
+  });
+}
 
-    newPokemons.forEach((pokemon) => {
-      const card = renderer.renderPokeCard(pokemon);
-      CardClickHandler(card, pokemon);
-      pokeCards.appendChild(card);
-    });
-  }
+function renderCardList(list) {
+  pokeCards.innerHTML = "";
+  list.forEach((pokemon) => {
+    const card = renderer.renderPokeCard(pokemon);
+    cardClickHandler(card, pokemon);
+    pokeCards.appendChild(card);
+  });
 }
 
 function loadMorePokemonListener(button) {
@@ -68,28 +65,15 @@ function searchInputRendering() {
     const inputUser = searchInput.value.toLowerCase();
 
     if (inputUser.length < 3) {
-      pokeCards.innerHTML = "";
-
-      renderer.originalPokemonList.forEach((pokemon) => {
-        const card = renderer.renderPokeCard(pokemon);
-        CardClickHandler(card, pokemon);
-        pokeCards.appendChild(card);
-      });
+      renderCardList(renderer.originalPokemonList);
       return;
     }
 
-    // mehr als 3 zeichen getippt:
     const filtered = renderer.originalPokemonList.filter((pokemon) =>
       pokemon.name.toLowerCase().includes(inputUser)
     );
 
-    pokeCards.innerHTML = "";
-
-    filtered.forEach((pokemon) => {
-      const card = renderer.renderPokeCard(pokemon);
-      CardClickHandler(card, pokemon);
-      pokeCards.appendChild(card);
-    });
+    renderCardList(filtered);
   });
 }
 
@@ -117,7 +101,7 @@ async function initPokedex() {
 
 // #region DETAIL-CARD
 
-function CardClickHandler(card, pokemon) {
+function cardClickHandler(card, pokemon) {
   card.addEventListener("click", () => {
     const index = renderer.originalPokemonList.findIndex(
       (pk) => pk.id === pokemon.id
@@ -127,49 +111,64 @@ function CardClickHandler(card, pokemon) {
 }
 
 async function renderDetailCard(index) {
-  let currentIndex = index;
+  if (index >= renderer.originalPokemonList.length) {
+    return;
+  }
 
   const overlay = document.getElementById("detail-overlay");
   overlay.innerHTML = "";
   overlay.classList.remove("hidden");
   document.body.style.overflow = "hidden";
 
-  await loadNextPokemonsIfIndexMissing(currentIndex);
-
-  const newPokemon = renderer.originalPokemonList[currentIndex];
+  const newPokemon = renderer.originalPokemonList[index];
   const detailCard = renderer.renderPokemonDetailCard(newPokemon);
 
   overlay.appendChild(detailCard);
+  closeButtonListener(overlay);
+  cardNavigationListener(overlay, index);
+}
 
+function closeButtonListener(overlay) {
   const closeIcon = overlay.querySelector(".close-image");
+
   if (closeIcon) {
     closeIcon.addEventListener("click", () => {
-      overlay.classList.add("hidden");
-      document.body.style.overflow = "";
+      closeOverlay(overlay);
     });
   }
 
-  navigationButtons(overlay, currentIndex, renderDetailCard);
+  overlay.addEventListener("click", (event) => {
+    if (event.target === overlay) {
+      closeOverlay(overlay);
+    }
+  });
 }
 
-function navigationButtons(overlay, currentIndex, renderFn) {
+function closeOverlay(overlay) {
+  overlay.classList.add("hidden");
+  document.body.style.overflow = "";
+}
+
+function cardNavigationListener(overlay, currentIndex) {
   const leftBtn = overlay.querySelector("#switch-left");
   const rightBtn = overlay.querySelector("#switch-right");
+  const maxIndex = renderer.originalPokemonList.length - 1;
 
   if (leftBtn) {
-    leftBtn.addEventListener("click", async () => {
-      const prevIndex = (currentIndex - 1 + 151) % 151;
-      await renderFn(prevIndex);
+    leftBtn.addEventListener("click", () => {
+      const prevIndex = currentIndex === 0 ? maxIndex : currentIndex - 1;
+      renderDetailCard(prevIndex);
     });
   }
 
   if (rightBtn) {
-    rightBtn.addEventListener("click", async () => {
-      const nextIndex = (currentIndex + 1) % 151;
-      await renderFn(nextIndex);
+    rightBtn.addEventListener("click", () => {
+      const nextIndex = currentIndex === maxIndex ? 0 : currentIndex + 1;
+      renderDetailCard(nextIndex);
     });
   }
 }
+
 // #endregion DETAIL-CARD
 
 await initPokedex();

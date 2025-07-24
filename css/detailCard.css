@@ -30,7 +30,7 @@
     font-size: 2rem;
     font-weight: 400;
 
-    span:first-of-type {
+    span:nth-of-type(2) {
       font-family: "Press Start 2P", sans-serif;
     }
 
