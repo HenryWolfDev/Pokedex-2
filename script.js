@@ -61,7 +61,7 @@ function loadMorePokemonListener(button) {
   button.addEventListener("click", () => loadAndRenderPokemon(button));
 }
 
-function searchInputListenerAndRendering() {
+function searchInputRendering() {
   const searchInput = document.getElementById("search-input");
 
   searchInput.addEventListener("input", () => {
@@ -110,7 +110,7 @@ async function initPokedex() {
   renderer.containerElement.appendChild(pokeCards);
 
   loadMorePokemonListener(button);
-  searchInputListenerAndRendering();
+  searchInputRendering();
   await loadAndRenderPokemon(button);
 }
 // #endregion LOAD-RENDERING
