@@ -11,11 +11,6 @@ let pokeCards;
 async function loadAndRenderPokemon(button) {
   showSpinner();
   try {
-    if (currentOffset > 151) {
-      button.disabled = true;
-      return [];
-    }
-
     const restPokemons = 151 - currentOffset + 1;
     const fetchLimit = Math.min(limit, restPokemons);
     const newPokemons = await FetchPokemonData.loadPokemons(
@@ -27,8 +22,9 @@ async function loadAndRenderPokemon(button) {
     renderPokemonCards(newPokemons);
 
     currentOffset += limit;
+
     if (currentOffset > 151) {
-      button.disabled = true;
+      button.style.display = `none`;
     }
 
     return newPokemons;
