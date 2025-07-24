@@ -52,7 +52,7 @@ export const Templates = {
 
     const closeIcon = document.createElement("img");
     closeIcon.classList.add("close-image");
-    closeIcon.src = `../images/close-icon.png`;
+    closeIcon.src = `/Pokedex/images/close-icon.png`;
     closeIcon.alt = "Pokeball logo";
 
     const name = document.createElement("span");
@@ -71,7 +71,7 @@ export const Templates = {
     const pokeIconLeft = document.createElement("img");
     pokeIconLeft.classList.add("switch-image");
     pokeIconLeft.id = "switch-left";
-    pokeIconLeft.src = `../images/pokeball-left.PNG`;
+    pokeIconLeft.src = `/Pokedex/images/pokeball-left.PNG`;
 
     const image = document.createElement("img");
     image.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${pokemon.id}.svg`;
@@ -80,7 +80,7 @@ export const Templates = {
     const pokeIconRight = document.createElement("img");
     pokeIconRight.classList.add("switch-image");
     pokeIconRight.id = "switch-right";
-    pokeIconRight.src = `../images/pokeball-right.png`;
+    pokeIconRight.src = `/Pokedex/images/pokeball-right.png`;
 
     imageBox.appendChild(pokeIconLeft);
     imageBox.appendChild(image);
