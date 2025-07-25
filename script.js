@@ -56,12 +56,14 @@ function loadMorePokemonListener(button) {
 
 function searchInputRendering() {
   const searchInput = document.getElementById("search-input");
+  const loadMoreButton = document.getElementById("next-button");
 
   searchInput.addEventListener("input", () => {
     const inputUser = searchInput.value.toLowerCase();
 
     if (inputUser.length < 3) {
       renderCardList(renderer.originalPokemonList);
+      loadMoreButton.style.display = "block";
       return;
     }
 
@@ -70,6 +72,7 @@ function searchInputRendering() {
     );
 
     renderCardList(filtered);
+    loadMoreButton.style.display = "none";
   });
 }
 
